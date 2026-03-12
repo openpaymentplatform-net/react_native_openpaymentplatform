@@ -1,5 +1,5 @@
 import * as CryptoJS from 'crypto-js';
-import { AkuratecoOrder } from '../models/akurateco_order';
+import { OpenPaymentPlatformOrder } from '../models/openpaymentplatform_order';
 
 /**
  * Hash/signature helpers used by the backend API.
@@ -12,14 +12,14 @@ import { AkuratecoOrder } from '../models/akurateco_order';
  *
  * Note: this implementation is deterministic and has no side effects.
  */
-export class AkuratecoHashUtils {
+export class OpenPaymentPlatformHashUtils {
   /**
    * Generates a hash for creating a checkout session.
    *
    * Input concatenation order:
    * `order.number + order.amount + order.currency + order.description + password`
    */
-  static generateCheckoutHash(args: { order: AkuratecoOrder; password: string }): string {
+  static generateCheckoutHash(args: { order: OpenPaymentPlatformOrder; password: string }): string {
     const { order, password } = args;
     const toMd5 = `${order.number}${order.amount}${order.currency}${order.description}${password}`;
     return this._generateHash(toMd5);

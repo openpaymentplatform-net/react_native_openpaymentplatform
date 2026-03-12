@@ -1,4 +1,4 @@
-import { AkuratecoOrder } from './akurateco_order';
+import { OpenPaymentPlatformOrder } from './openpaymentplatform_order';
 import { Customer } from './customer';
 import { PaymentStatus } from './enums';
 /**
@@ -11,7 +11,7 @@ export declare class CheckStatusResult {
     readonly reason?: string | null;
     readonly recurringToken?: string | null;
     readonly sheduleId?: string | null;
-    readonly order: AkuratecoOrder;
+    readonly order: OpenPaymentPlatformOrder;
     readonly customer?: Customer | null;
     constructor(args: {
         paymentId: string;
@@ -20,7 +20,7 @@ export declare class CheckStatusResult {
         reason?: string | null;
         recurringToken?: string | null;
         sheduleId?: string | null;
-        order: AkuratecoOrder;
+        order: OpenPaymentPlatformOrder;
         customer?: Customer | null;
     });
     /**

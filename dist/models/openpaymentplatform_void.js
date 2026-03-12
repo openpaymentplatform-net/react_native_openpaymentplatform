@@ -1,9 +1,9 @@
-import { AkuratecoOrder } from './akurateco_order';
+import { OpenPaymentPlatformOrder } from './openpaymentplatform_order';
 import { statusToString, stringToStatus } from './enums';
 /**
  * Parsed response from the backend void endpoint.
  */
-export class AkuratecoVoid {
+export class OpenPaymentPlatformVoid {
     constructor(args) {
         var _a;
         this.status = args.status;
@@ -16,12 +16,12 @@ export class AkuratecoVoid {
      * Creates an instance from a backend JSON payload.
      */
     static fromJson(json) {
-        return new AkuratecoVoid({
+        return new OpenPaymentPlatformVoid({
             status: stringToStatus(json === null || json === void 0 ? void 0 : json['status']),
             paymentId: json === null || json === void 0 ? void 0 : json['payment_id'],
             date: new Date(Date.parse(json === null || json === void 0 ? void 0 : json['date'])),
             reason: json === null || json === void 0 ? void 0 : json['reason'],
-            order: AkuratecoOrder.fromJson(json === null || json === void 0 ? void 0 : json['order']),
+            order: OpenPaymentPlatformOrder.fromJson(json === null || json === void 0 ? void 0 : json['order']),
         });
     }
     /**
@@ -38,4 +38,4 @@ export class AkuratecoVoid {
         };
     }
 }
-//# sourceMappingURL=akurateco_void.js.map
+//# sourceMappingURL=openpaymentplatform_void.js.map

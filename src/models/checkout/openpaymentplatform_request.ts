@@ -1,4 +1,4 @@
-import { AkuratecoOrder } from '../akurateco_order';
+import { OpenPaymentPlatformOrder } from '../openpaymentplatform_order';
 import { Customer } from '../customer';
 import { BillingAddress } from './billing_address';
 import { Payee } from './payee';
@@ -6,7 +6,7 @@ import { Payee } from './payee';
 /**
  * Operation type for the hosted checkout.
  */
-export enum AkuratecoOperation {
+export enum OpenPaymentPlatformOperation {
   purchase = 'purchase',
   debit = 'debit',
   transfer = 'transfer',
@@ -18,8 +18,8 @@ export enum AkuratecoOperation {
  * This object is serialized with {@link toJson} and sent to your backend. The
  * backend typically adds merchant data (merchant key) and a signature/hash.
  */
-export class AkuratecoRequest {
-  readonly operation: AkuratecoOperation;
+export class OpenPaymentPlatformRequest {
+  readonly operation: OpenPaymentPlatformOperation;
   readonly successUrl: string;
   readonly methods?: string[] | null;
   readonly channelId?: string | null;
@@ -34,7 +34,7 @@ export class AkuratecoRequest {
   readonly recurringInit?: boolean | null;
   readonly scheduleId?: string | null;
   readonly vatCalc?: boolean | null;
-  readonly order: AkuratecoOrder;
+  readonly order: OpenPaymentPlatformOrder;
   readonly customer?: Customer | null;
   readonly billingAddress?: BillingAddress | null;
   readonly payee?: Payee | null;
@@ -43,9 +43,9 @@ export class AkuratecoRequest {
   readonly customData?: Record<string, any> | null;
 
   constructor(args: {
-    operation: AkuratecoOperation;
+    operation: OpenPaymentPlatformOperation;
     successUrl: string;
-    order: AkuratecoOrder;
+    order: OpenPaymentPlatformOrder;
 
     methods?: string[] | null;
     channelId?: string | null;

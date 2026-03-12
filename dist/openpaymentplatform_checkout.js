@@ -2,13 +2,13 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import WebView from 'react-native-webview';
-import { Akurateco } from './akurateco';
+import { OpenPaymentPlatform } from './openpaymentplatform';
 import { PaymentCallbackException, PaymentException, PaymentInitializationException, PaymentWebViewException, } from './exceptions/exceptions';
 /**
- * React Native component that performs the hosted Akurateco checkout inside a WebView.
+ * React Native component that performs the hosted OpenPaymentPlatform checkout inside a WebView.
  *
  * Flow:
- * 1) On mount, it calls `Akurateco.instance.fetchPaymentUrl(...)`.
+ * 1) On mount, it calls `OpenPaymentPlatform.instance.fetchPaymentUrl(...)`.
  * 2) When the payment URL is received, it loads it into a `react-native-webview`.
  * 3) Every navigation is inspected. If it matches success/error/cancel URLs, the
  *    matching callback on the provided controller is called.
@@ -22,7 +22,7 @@ import { PaymentCallbackException, PaymentException, PaymentInitializationExcept
  * @example
  * ```tsx
  * import React, { useMemo } from 'react';
- * import { AkuratecoCheckout, CheckoutController } from 'react_native_akurateco';
+ * import { OpenPaymentPlatformCheckout, CheckoutController } from 'react_native_openpaymentplatform';
  *
  * export function CheckoutScreen() {
  *   const controller = useMemo(() => {
@@ -35,11 +35,11 @@ import { PaymentCallbackException, PaymentException, PaymentInitializationExcept
  *     });
  *   }, []);
  *
- *   return <AkuratecoCheckout controller={controller} />;
+ *   return <OpenPaymentPlatformCheckout controller={controller} />;
  * }
  * ```
  */
-export function AkuratecoCheckout({ controller }) {
+export function OpenPaymentPlatformCheckout({ controller }) {
     const [paymentUrl, setPaymentUrl] = useState(null);
     const mounted = useRef(true);
     const matchers = useMemo(() => {
@@ -59,13 +59,13 @@ export function AkuratecoCheckout({ controller }) {
      */
     const handleUrl = (url) => {
         var _a, _b, _c, _d, _e;
-        console.log(`[AkuratecoCheckout] Navigating to URL: ${url}`);
+        console.log(`[OpenPaymentPlatformCheckout] Navigating to URL: ${url}`);
         try {
             if (url.includes(matchers.success)) {
                 (_a = controller.onSuccessRedirect) === null || _a === void 0 ? void 0 : _a.call(controller, url);
             }
             else if (matchers.error && url.includes(matchers.error)) {
-                console.log(`[AkuratecoCheckout] Detected error redirect URL.`);
+                console.log(`[OpenPaymentPlatformCheckout] Detected error redirect URL.`);
                 (_b = controller.onErrorRedirect) === null || _b === void 0 ? void 0 : _b.call(controller, url);
             }
             else if (matchers.cancel && url.includes(matchers.cancel)) {
@@ -92,8 +92,8 @@ export function AkuratecoCheckout({ controller }) {
         (async () => {
             var _a, _b, _c;
             try {
-                console.log('[AkuratecoCheckout] Requesting payment URL with request:');
-                const url = await Akurateco.instance.fetchPaymentUrl(controller.paymentRequest);
+                console.log('[OpenPaymentPlatformCheckout] Requesting payment URL with request:');
+                const url = await OpenPaymentPlatform.instance.fetchPaymentUrl(controller.paymentRequest);
                 if (mounted.current)
                     setPaymentUrl(url);
             }
@@ -114,11 +114,11 @@ export function AkuratecoCheckout({ controller }) {
         return (_jsx(View, { style: { flex: 1, alignItems: 'center', justifyContent: 'center' }, children: _jsx(ActivityIndicator, {}) }));
     }
     return (_jsx(WebView, { source: { uri: paymentUrl }, onShouldStartLoadWithRequest: (req) => {
-            console.log(`[AkuratecoCheckout] onShouldStartLoadWithRequest: ${req === null || req === void 0 ? void 0 : req.url}`);
+            console.log(`[OpenPaymentPlatformCheckout] onShouldStartLoadWithRequest: ${req === null || req === void 0 ? void 0 : req.url}`);
             const url = req === null || req === void 0 ? void 0 : req.url;
             if (typeof url === 'string')
                 handleUrl(url);
             return true;
         }, onError: handleWebError, javaScriptEnabled: true }));
 }
-//# sourceMappingURL=akurateco_checkout.js.map
+//# sourceMappingURL=openpaymentplatform_checkout.js.map

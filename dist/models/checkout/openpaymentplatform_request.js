@@ -1,19 +1,19 @@
 /**
  * Operation type for the hosted checkout.
  */
-export var AkuratecoOperation;
-(function (AkuratecoOperation) {
-    AkuratecoOperation["purchase"] = "purchase";
-    AkuratecoOperation["debit"] = "debit";
-    AkuratecoOperation["transfer"] = "transfer";
-})(AkuratecoOperation || (AkuratecoOperation = {}));
+export var OpenPaymentPlatformOperation;
+(function (OpenPaymentPlatformOperation) {
+    OpenPaymentPlatformOperation["purchase"] = "purchase";
+    OpenPaymentPlatformOperation["debit"] = "debit";
+    OpenPaymentPlatformOperation["transfer"] = "transfer";
+})(OpenPaymentPlatformOperation || (OpenPaymentPlatformOperation = {}));
 /**
  * Checkout session creation request.
  *
  * This object is serialized with {@link toJson} and sent to your backend. The
  * backend typically adds merchant data (merchant key) and a signature/hash.
  */
-export class AkuratecoRequest {
+export class OpenPaymentPlatformRequest {
     constructor(args) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
         this.operation = args.operation;
@@ -74,4 +74,4 @@ export class AkuratecoRequest {
         };
     }
 }
-//# sourceMappingURL=akurateco_request.js.map
+//# sourceMappingURL=openpaymentplatform_request.js.map

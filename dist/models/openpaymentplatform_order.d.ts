@@ -1,7 +1,7 @@
 /**
  * Order details used for creating a checkout session and for status/void payloads.
  */
-export declare class AkuratecoOrder {
+export declare class OpenPaymentPlatformOrder {
     readonly number: string;
     readonly amount: string;
     readonly currency: string;
@@ -15,7 +15,7 @@ export declare class AkuratecoOrder {
     /**
      * Creates an instance from a backend JSON payload.
      */
-    static fromJson(json: any): AkuratecoOrder;
+    static fromJson(json: any): OpenPaymentPlatformOrder;
     /**
      * Serializes the order to JSON expected by the backend.
      */
@@ -31,4 +31,4 @@ export declare class AkuratecoOrder {
      */
     isValid(): boolean;
 }
-//# sourceMappingURL=akurateco_order.d.ts.map
+//# sourceMappingURL=openpaymentplatform_order.d.ts.map

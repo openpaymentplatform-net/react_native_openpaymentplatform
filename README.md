@@ -1,12 +1,12 @@
-# react_native_akurateco
+# react_native_openpaymentplatform
 
-React Native SDK for integrating with Akurateco via **your own backend**.
+React Native SDK for integrating with OpenPaymentPlatform via **your own backend**.
 
 This SDK focuses on two practical things:
 1) provides typed models to build a checkout/session request,
 2) renders the hosted checkout in `react-native-webview` and delivers redirect callbacks (success/cancel/error).
 
-Important: the library **does not call Akurateco directly**. It sends requests to your API (`backendUrl`), and your backend performs the Akurateco integration/proxying.
+Important: the library **does not call OpenPaymentPlatform directly**. It sends requests to your API (`backendUrl`), and your backend performs the OpenPaymentPlatform integration/proxying.
 
 ## Contents
 
@@ -14,7 +14,7 @@ Important: the library **does not call Akurateco directly**. It sends requests t
 - [Installation](#installation)
 - [Quick start](#quick-start)
 - [Checkout UI (WebView)](#checkout-ui-webview)
-- [API: Akurateco](#api-akurateco)
+- [API: OpenPaymentPlatform](#api-openpaymentplatform)
 - [Backend API (what you must implement)](#backend-api-what-you-must-implement)
 - [Errors](#errors)
 - [Security notes](#security-notes)
@@ -31,7 +31,7 @@ Compatibility note: the `example/` app is built for Expo SDK 54 / React Native 0
 ## Installation
 
 ```sh
-npm i @akurateco/react-native-akurateco
+npm i @openpaymentplatform/react-native-openpaymentplatform
 ```
 
 ### Dependencies your app must install
@@ -60,12 +60,12 @@ Note: `crypto-js` is installed automatically as a dependency of this SDK.
 
 ### 1) Initialize
 
-Initialize the singleton once at app startup using `Akurateco.instance`:
+Initialize the singleton once at app startup using `OpenPaymentPlatform.instance`:
 
 ```ts
-import { Akurateco } from '@akurateco/react-native-akurateco';
+import { OpenPaymentPlatform } from '@openpaymentplatform/react-native-openpaymentplatform';
 
-Akurateco.instance.initialize({
+OpenPaymentPlatform.instance.initialize({
   backendUrl: 'https://your-backend.example',
   merchantKey: 'YOUR_MERCHANT_KEY',
   password: 'YOUR_PASSWORD',
@@ -76,17 +76,17 @@ Akurateco.instance.initialize({
 
 ```ts
 import {
-  AkuratecoRequest,
-  AkuratecoOperation,
-  AkuratecoOrder,
-} from '@akurateco/react-native-akurateco';
+  OpenPaymentPlatformRequest,
+  OpenPaymentPlatformOperation,
+  OpenPaymentPlatformOrder,
+} from '@openpaymentplatform/react-native-openpaymentplatform';
 
-const request = new AkuratecoRequest({
-  operation: AkuratecoOperation.purchase,
+const request = new OpenPaymentPlatformRequest({
+  operation: OpenPaymentPlatformOperation.purchase,
   successUrl: 'https://your-app.example/payment/success',
   cancelUrl: 'https://your-app.example/payment/cancel',
   errorUrl: 'https://your-app.example/payment/error',
-  order: new AkuratecoOrder({
+  order: new OpenPaymentPlatformOrder({
     number: 'ORDER-123',
     amount: '10.00',
     currency: 'USD',
@@ -101,7 +101,7 @@ const request = new AkuratecoRequest({
 
 ```tsx
 import React, { useMemo } from 'react';
-import { AkuratecoCheckout, CheckoutController } from '@akurateco/react-native-akurateco';
+import { OpenPaymentPlatformCheckout, CheckoutController } from '@openpaymentplatform/react-native-openpaymentplatform';
 
 export function CheckoutScreen() {
   const controller = useMemo(
@@ -124,31 +124,31 @@ export function CheckoutScreen() {
     [],
   );
 
-  return <AkuratecoCheckout controller={controller} />;
+  return <OpenPaymentPlatformCheckout controller={controller} />;
 }
 ```
 
 ## Checkout UI (WebView)
 
-`AkuratecoCheckout` does the following:
-1) on mount, calls `Akurateco.instance.fetchPaymentUrl(paymentRequest)`,
+`OpenPaymentPlatformCheckout` does the following:
+1) on mount, calls `OpenPaymentPlatform.instance.fetchPaymentUrl(paymentRequest)`,
 2) opens the returned URL in `react-native-webview`,
 3) listens to navigation and calls the callbacks from `CheckoutController`.
 
 ### How redirects are detected
 
-The SDK reads `successUrl`, `errorUrl`, `cancelUrl` from `AkuratecoRequest` and checks every navigation with a simple `url.includes(...)`.
+The SDK reads `successUrl`, `errorUrl`, `cancelUrl` from `OpenPaymentPlatformRequest` and checks every navigation with a simple `url.includes(...)`.
 
 Tip: keep these URLs reasonably unique (e.g. `/payment/success`) to avoid accidental matches.
 
-## API: Akurateco
+## API: OpenPaymentPlatform
 
-`Akurateco` is a facade for backend requests. It stores configuration and uses it for all API calls.
+`OpenPaymentPlatform` is a facade for backend requests. It stores configuration and uses it for all API calls.
 
 ### initialize
 
 ```ts
-Akurateco.instance.initialize({ backendUrl, merchantKey, password });
+OpenPaymentPlatform.instance.initialize({ backendUrl, merchantKey, password });
 ```
 
 This must be called before any methods below.
@@ -156,7 +156,7 @@ This must be called before any methods below.
 ### fetchPaymentUrl
 
 ```ts
-const url = await Akurateco.instance.fetchPaymentUrl(request);
+const url = await OpenPaymentPlatform.instance.fetchPaymentUrl(request);
 ```
 
 Creates a session on your backend and returns `redirect_url` which is then loaded in the WebView.
@@ -164,21 +164,21 @@ Creates a session on your backend and returns `redirect_url` which is then loade
 ### checkStatus
 
 ```ts
-const status = await Akurateco.instance.checkStatus({ paymentId: '123' });
+const status = await OpenPaymentPlatform.instance.checkStatus({ paymentId: '123' });
 // or
-const status2 = await Akurateco.instance.checkStatus({ orderId: 'ORDER-123' });
+const status2 = await OpenPaymentPlatform.instance.checkStatus({ orderId: 'ORDER-123' });
 ```
 
 ### refundPayment
 
 ```ts
-const result = await Akurateco.instance.refundPayment({ paymentId: '123', amount: '10.00' });
+const result = await OpenPaymentPlatform.instance.refundPayment({ paymentId: '123', amount: '10.00' });
 ```
 
 ### voidPayment
 
 ```ts
-const result = await Akurateco.instance.voidPayment({ paymentId: '123' });
+const result = await OpenPaymentPlatform.instance.voidPayment({ paymentId: '123' });
 ```
 
 ## Backend API (what you must implement)
@@ -221,13 +221,13 @@ Common types:
 - iOS (bare): after installing `react-native-webview`, run `cd ios && pod install`.
 - Blank WebView screen: verify that `/api/v1/session` returns a valid `redirect_url`.
 - Callbacks don’t fire: ensure `successUrl/errorUrl/cancelUrl` are unique enough (matching uses `includes`).
-- Initialization errors: make sure `Akurateco.instance.initialize(...)` runs before rendering `AkuratecoCheckout`.
+- Initialization errors: make sure `OpenPaymentPlatform.instance.initialize(...)` runs before rendering `OpenPaymentPlatformCheckout`.
 
 ## Getting help
 
 To report a specific issue or feature request, open a new issue.
 
-Or write a direct letter to admin@akurateco.com.
+Or write a direct letter to admin@openpaymentplatform.net.
 
 ## License
 
@@ -235,16 +235,16 @@ MIT License. See the LICENSE file for more details.
 
 ## Contacts
 
-![](https://github.com/akurateco/akurateco-android-sdk/blob/main/media/footer.jpg)
+![](https://github.com/openpaymentplatform/openpaymentplatform-android-sdk/blob/main/media/footer.jpg)
 
-Website: https://akurateco.com
+Website: https://openpaymentplatform.net
 
 Phone: +31-638-7642-70
 
-Email: admin@akurateco.com
+Email: admin@openpaymentplatform.net
 
-Address: Akurateco BV, Kingsfordweg 151, 1043 GR Amsterdam, The Netherlands
+Address: OpenPaymentPlatform BV, Kingsfordweg 151, 1043 GR Amsterdam, The Netherlands
 
 ---
 
-© 2014 - 2020 Akurateco. All rights reserved.
+© 2014 - 2020 OpenPaymentPlatform. All rights reserved.

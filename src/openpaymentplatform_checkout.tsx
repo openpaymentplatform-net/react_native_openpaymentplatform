@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
-import { Akurateco } from './akurateco';
+import { OpenPaymentPlatform } from './openpaymentplatform';
 import type { CheckoutController } from './checkout_controller';
 import {
   PaymentCallbackException,
@@ -21,10 +21,10 @@ type Props = {
 };
 
 /**
- * React Native component that performs the hosted Akurateco checkout inside a WebView.
+ * React Native component that performs the hosted OpenPaymentPlatform checkout inside a WebView.
  *
  * Flow:
- * 1) On mount, it calls `Akurateco.instance.fetchPaymentUrl(...)`.
+ * 1) On mount, it calls `OpenPaymentPlatform.instance.fetchPaymentUrl(...)`.
  * 2) When the payment URL is received, it loads it into a `react-native-webview`.
  * 3) Every navigation is inspected. If it matches success/error/cancel URLs, the
  *    matching callback on the provided controller is called.
@@ -38,7 +38,7 @@ type Props = {
  * @example
  * ```tsx
  * import React, { useMemo } from 'react';
- * import { AkuratecoCheckout, CheckoutController } from 'react_native_akurateco';
+ * import { OpenPaymentPlatformCheckout, CheckoutController } from 'react_native_openpaymentplatform';
  *
  * export function CheckoutScreen() {
  *   const controller = useMemo(() => {
@@ -51,11 +51,11 @@ type Props = {
  *     });
  *   }, []);
  *
- *   return <AkuratecoCheckout controller={controller} />;
+ *   return <OpenPaymentPlatformCheckout controller={controller} />;
  * }
  * ```
  */
-export function AkuratecoCheckout({ controller }: Props) {
+export function OpenPaymentPlatformCheckout({ controller }: Props) {
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const mounted = useRef(true);
 
@@ -75,12 +75,12 @@ export function AkuratecoCheckout({ controller }: Props) {
    * configured in the payment request.
    */
   const handleUrl = (url: string) => {
-    console.log(`[AkuratecoCheckout] Navigating to URL: ${url}`);
+    console.log(`[OpenPaymentPlatformCheckout] Navigating to URL: ${url}`);
     try {
       if (url.includes(matchers.success)) {
         controller.onSuccessRedirect?.(url);
       } else if (matchers.error && url.includes(matchers.error)) {
-      console.log(`[AkuratecoCheckout] Detected error redirect URL.`);
+      console.log(`[OpenPaymentPlatformCheckout] Detected error redirect URL.`);
         controller.onErrorRedirect?.(url);
       } else if (matchers.cancel && url.includes(matchers.cancel)) {
         controller.onCancelRedirect?.(url);
@@ -108,8 +108,8 @@ export function AkuratecoCheckout({ controller }: Props) {
 
     (async () => {
       try {
-        console.log('[AkuratecoCheckout] Requesting payment URL with request:');
-        const url = await Akurateco.instance.fetchPaymentUrl(controller.paymentRequest);
+        console.log('[OpenPaymentPlatformCheckout] Requesting payment URL with request:');
+        const url = await OpenPaymentPlatform.instance.fetchPaymentUrl(controller.paymentRequest);
         if (mounted.current) setPaymentUrl(url);
       } catch (e: any) {
 
@@ -142,7 +142,7 @@ export function AkuratecoCheckout({ controller }: Props) {
     <WebView
       source={{ uri: paymentUrl }}
       onShouldStartLoadWithRequest={(req: any) => {
-        console.log(`[AkuratecoCheckout] onShouldStartLoadWithRequest: ${req?.url}`);
+        console.log(`[OpenPaymentPlatformCheckout] onShouldStartLoadWithRequest: ${req?.url}`);
         const url = req?.url;
         if (typeof url === 'string') handleUrl(url);
         return true;

@@ -1,33 +1,33 @@
 import { HttpServiceService } from './http/http_service';
-import type { AkuratecoRequest } from './models/checkout/akurateco_request';
+import type { OpenPaymentPlatformRequest } from './models/checkout/openpaymentplatform_request';
 import { CheckStatusResult } from './models/check_status_model';
-import { AkuratecoVoid } from './models/akurateco_void';
+import { OpenPaymentPlatformVoid } from './models/openpaymentplatform_void';
 
 /**
- * Main entry point for working with Akurateco backend APIs.
+ * Main entry point for working with OpenPaymentPlatform backend APIs.
  *
- * This class is implemented as a singleton (`Akurateco.instance`) so that the
+ * This class is implemented as a singleton (`OpenPaymentPlatform.instance`) so that the
  * checkout UI component and HTTP layer can share the same configuration
  * (backend URL, merchant key, password).
  *
  * Typical usage:
- * 1) Call {@link Akurateco.initialize} once on app startup.
- * 2) Create an {@link AkuratecoRequest} and pass it into {@link CheckoutController}.
- * 3) Render {@link AkuratecoCheckout} to start the checkout flow.
+ * 1) Call {@link OpenPaymentPlatform.initialize} once on app startup.
+ * 2) Create an {@link OpenPaymentPlatformRequest} and pass it into {@link CheckoutController}.
+ * 3) Render {@link OpenPaymentPlatformCheckout} to start the checkout flow.
  *
  * @example
  * ```ts
- * import { Akurateco } from 'react_native_akurateco';
+ * import { OpenPaymentPlatform } from 'react_native_openpaymentplatform';
  *
- * Akurateco.instance.initialize({
+ * OpenPaymentPlatform.instance.initialize({
  *   backendUrl: 'https://your-backend.example',
  *   merchantKey: 'YOUR_MERCHANT_KEY',
  *   password: 'YOUR_PASSWORD',
  * });
  * ```
  */
-export class Akurateco {
-  private static readonly _instance = new Akurateco();
+export class OpenPaymentPlatform {
+  private static readonly _instance = new OpenPaymentPlatform();
 
   /**
    * Global singleton instance.
@@ -35,16 +35,16 @@ export class Akurateco {
    * Note: this is mutable state. Make sure you call {@link initialize} before
    * calling any API methods.
    */
-  static get instance(): Akurateco {
-    return Akurateco._instance;
+  static get instance(): OpenPaymentPlatform {
+    return OpenPaymentPlatform._instance;
   }
 
   private constructor() {}
 
-  /** Base URL of your backend that proxies/implements Akurateco API endpoints. */
+  /** Base URL of your backend that proxies/implements OpenPaymentPlatform API endpoints. */
   backendUrl!: string;
 
-  /** Merchant key provided by Akurateco. Sent to the backend with each request. */
+  /** Merchant key provided by OpenPaymentPlatform. Sent to the backend with each request. */
   merchantKey!: string;
 
   /** Password used for request hashing/signing. Never expose it publicly. */
@@ -63,7 +63,7 @@ export class Akurateco {
    *
    * @example
    * ```ts
-   * Akurateco.instance.initialize({
+   * OpenPaymentPlatform.instance.initialize({
    *   backendUrl: 'https://your-backend.example',
    *   merchantKey: 'YOUR_MERCHANT_KEY',
    *   password: 'YOUR_PASSWORD',
@@ -83,7 +83,7 @@ export class Akurateco {
    * @throws PaymentBackendException If the backend returned non-200 or unexpected payload.
    * @throws PaymentInitializationException For unexpected/network errors.
    */
-  fetchPaymentUrl(request: AkuratecoRequest): Promise<string> {
+  fetchPaymentUrl(request: OpenPaymentPlatformRequest): Promise<string> {
     return this._httpService.fetchPaymentUrl(request);
   }
 
@@ -114,7 +114,7 @@ export class Akurateco {
    *
    * @param args.paymentId Payment identifier.
    */
-  voidPayment(args: { paymentId: string }): Promise<AkuratecoVoid> {
+  voidPayment(args: { paymentId: string }): Promise<OpenPaymentPlatformVoid> {
     return this._httpService.voidOperation(args);
   }
 }

@@ -1,4 +1,4 @@
-import { AkuratecoOrder } from '../models/akurateco_order';
+import { OpenPaymentPlatformOrder } from '../models/openpaymentplatform_order';
 /**
  * Hash/signature helpers used by the backend API.
  *
@@ -10,7 +10,7 @@ import { AkuratecoOrder } from '../models/akurateco_order';
  *
  * Note: this implementation is deterministic and has no side effects.
  */
-export declare class AkuratecoHashUtils {
+export declare class OpenPaymentPlatformHashUtils {
     /**
      * Generates a hash for creating a checkout session.
      *
@@ -18,7 +18,7 @@ export declare class AkuratecoHashUtils {
      * `order.number + order.amount + order.currency + order.description + password`
      */
     static generateCheckoutHash(args: {
-        order: AkuratecoOrder;
+        order: OpenPaymentPlatformOrder;
         password: string;
     }): string;
     /**

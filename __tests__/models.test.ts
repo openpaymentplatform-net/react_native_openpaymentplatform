@@ -1,11 +1,11 @@
-import { AkuratecoOrder } from '../src/models/akurateco_order';
+import { OpenPaymentPlatformOrder } from '../src/models/openpaymentplatform_order';
 import { CheckStatusResult } from '../src/models/check_status_model';
-import { AkuratecoVoid } from '../src/models/akurateco_void';
+import { OpenPaymentPlatformVoid } from '../src/models/openpaymentplatform_void';
 import { PaymentStatus } from '../src/models/enums';
 
 describe('Models', () => {
-  test('AkuratecoOrder.isValid validates required fields', () => {
-    const ok = new AkuratecoOrder({
+  test('OpenPaymentPlatformOrder.isValid validates required fields', () => {
+    const ok = new OpenPaymentPlatformOrder({
       number: 'ORDER-1',
       amount: '10.00',
       currency: 'USD',
@@ -14,7 +14,7 @@ describe('Models', () => {
 
     expect(ok.isValid()).toBe(true);
 
-    const badCurrency = new AkuratecoOrder({
+    const badCurrency = new OpenPaymentPlatformOrder({
       number: 'ORDER-1',
       amount: '10.00',
       currency: 'usd',
@@ -22,7 +22,7 @@ describe('Models', () => {
     });
     expect(badCurrency.isValid()).toBe(false);
 
-    const badAmount = new AkuratecoOrder({
+    const badAmount = new OpenPaymentPlatformOrder({
       number: 'ORDER-1',
       amount: '0',
       currency: 'USD',
@@ -30,7 +30,7 @@ describe('Models', () => {
     });
     expect(badAmount.isValid()).toBe(false);
 
-    const badDescription = new AkuratecoOrder({
+    const badDescription = new OpenPaymentPlatformOrder({
       number: 'ORDER-1',
       amount: '10.00',
       currency: 'USD',
@@ -69,7 +69,7 @@ describe('Models', () => {
     expect(out.order).toEqual(json.order);
   });
 
-  test('AkuratecoVoid roundtrips JSON mapping', () => {
+  test('OpenPaymentPlatformVoid roundtrips JSON mapping', () => {
     const json = {
       status: 'void',
       payment_id: 'p_1',
@@ -83,7 +83,7 @@ describe('Models', () => {
       },
     };
 
-    const model = AkuratecoVoid.fromJson(json);
+    const model = OpenPaymentPlatformVoid.fromJson(json);
     expect(model.status).toBe(PaymentStatus.voided);
     expect(model.paymentId).toBe('p_1');
 

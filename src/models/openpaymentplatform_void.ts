@@ -1,22 +1,22 @@
-import { AkuratecoOrder } from './akurateco_order';
+import { OpenPaymentPlatformOrder } from './openpaymentplatform_order';
 import { PaymentStatus, statusToString, stringToStatus } from './enums';
 
 /**
  * Parsed response from the backend void endpoint.
  */
-export class AkuratecoVoid {
+export class OpenPaymentPlatformVoid {
   readonly status: PaymentStatus;
   readonly paymentId: string;
   readonly date: Date;
   readonly reason?: string | null;
-  readonly order: AkuratecoOrder;
+  readonly order: OpenPaymentPlatformOrder;
 
   constructor(args: {
     status: PaymentStatus;
     paymentId: string;
     date: Date;
     reason?: string | null;
-    order: AkuratecoOrder;
+    order: OpenPaymentPlatformOrder;
   }) {
     this.status = args.status;
     this.paymentId = args.paymentId;
@@ -28,13 +28,13 @@ export class AkuratecoVoid {
   /**
    * Creates an instance from a backend JSON payload.
    */
-  static fromJson(json: any): AkuratecoVoid {
-    return new AkuratecoVoid({
+  static fromJson(json: any): OpenPaymentPlatformVoid {
+    return new OpenPaymentPlatformVoid({
       status: stringToStatus(json?.['status']),
       paymentId: json?.['payment_id'],
       date: new Date(Date.parse(json?.['date'])),
       reason: json?.['reason'],
-      order: AkuratecoOrder.fromJson(json?.['order']),
+      order: OpenPaymentPlatformOrder.fromJson(json?.['order']),
     });
   }
 

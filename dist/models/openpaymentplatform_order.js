@@ -1,7 +1,7 @@
 /**
  * Order details used for creating a checkout session and for status/void payloads.
  */
-export class AkuratecoOrder {
+export class OpenPaymentPlatformOrder {
     constructor(args) {
         this.number = args.number;
         this.amount = args.amount;
@@ -12,7 +12,7 @@ export class AkuratecoOrder {
      * Creates an instance from a backend JSON payload.
      */
     static fromJson(json) {
-        return new AkuratecoOrder({
+        return new OpenPaymentPlatformOrder({
             number: json === null || json === void 0 ? void 0 : json['number'],
             amount: json === null || json === void 0 ? void 0 : json['amount'],
             currency: json === null || json === void 0 ? void 0 : json['currency'],
@@ -51,4 +51,4 @@ export class AkuratecoOrder {
         return numberValid && amountValid && currencyValid && descriptionValid;
     }
 }
-//# sourceMappingURL=akurateco_order.js.map
+//# sourceMappingURL=openpaymentplatform_order.js.map

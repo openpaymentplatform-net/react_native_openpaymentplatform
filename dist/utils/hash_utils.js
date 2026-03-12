@@ -10,7 +10,7 @@ import * as CryptoJS from 'crypto-js';
  *
  * Note: this implementation is deterministic and has no side effects.
  */
-export class AkuratecoHashUtils {
+export class OpenPaymentPlatformHashUtils {
     /**
      * Generates a hash for creating a checkout session.
      *

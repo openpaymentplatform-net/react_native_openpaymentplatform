@@ -1,10 +1,10 @@
-import { AkuratecoVoid } from '../models/akurateco_void';
+import { OpenPaymentPlatformVoid } from '../models/openpaymentplatform_void';
 import { CheckStatusResult } from '../models/check_status_model';
-import type { AkuratecoRequest } from '../models/checkout/akurateco_request';
+import type { OpenPaymentPlatformRequest } from '../models/checkout/openpaymentplatform_request';
 /**
- * Internal HTTP client used by {@link Akurateco}.
+ * Internal HTTP client used by {@link OpenPaymentPlatform}.
  *
- * This client uses `fetch` to call a merchant backend (not Akurateco directly).
+ * This client uses `fetch` to call a merchant backend (not OpenPaymentPlatform directly).
  * The backend is expected to expose the following endpoints:
  * - `POST /api/v1/session`
  * - `POST /api/v1/payment/status`
@@ -29,10 +29,10 @@ export declare class HttpServiceService {
     /**
      * Creates a new payment session and returns a redirect URL.
      *
-     * The request payload is based on {@link AkuratecoRequest.toJson}, then extended
+     * The request payload is based on {@link OpenPaymentPlatformRequest.toJson}, then extended
      * with `merchant_key` and computed `hash`.
      */
-    fetchPaymentUrl(request: AkuratecoRequest): Promise<string>;
+    fetchPaymentUrl(request: OpenPaymentPlatformRequest): Promise<string>;
     /**
      * Requests payment status by `paymentId` or `orderId`.
      *
@@ -56,6 +56,6 @@ export declare class HttpServiceService {
      */
     voidOperation(args: {
         paymentId: string;
-    }): Promise<AkuratecoVoid>;
+    }): Promise<OpenPaymentPlatformVoid>;
 }
 //# sourceMappingURL=http_service.d.ts.map

@@ -1,9 +1,9 @@
 import { createHash } from 'crypto';
 
 import { HttpServiceService } from '../src/http/http_service';
-import { Akurateco } from '../src/akurateco';
-import { AkuratecoRequest, AkuratecoOperation } from '../src/models/checkout/akurateco_request';
-import { AkuratecoOrder } from '../src/models/akurateco_order';
+import { OpenPaymentPlatform } from '../src/openpaymentplatform';
+import { OpenPaymentPlatformRequest, OpenPaymentPlatformOperation } from '../src/models/checkout/openpaymentplatform_request';
+import { OpenPaymentPlatformOrder } from '../src/models/openpaymentplatform_order';
 import {
   PaymentBackendException,
   PaymentInitializationException,
@@ -29,19 +29,19 @@ describe('HttpServiceService', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
-    Akurateco.instance.password = 'password_123';
+    OpenPaymentPlatform.instance.password = 'password_123';
   });
 
   test('fetchPaymentUrl posts merged payload and returns redirect_url', async () => {
-    const order = new AkuratecoOrder({
+    const order = new OpenPaymentPlatformOrder({
       number: 'N-1',
       amount: '10.00',
       currency: 'USD',
       description: 'My order',
     });
 
-    const request = new AkuratecoRequest({
-      operation: AkuratecoOperation.purchase,
+    const request = new OpenPaymentPlatformRequest({
+      operation: OpenPaymentPlatformOperation.purchase,
       successUrl: 'https://example.com/success',
       order,
     });
@@ -62,7 +62,7 @@ describe('HttpServiceService', () => {
     const posted = JSON.parse(init.body);
     expect(posted.merchant_key).toBe(merchantKey);
 
-    const toMd5 = `${order.number}${order.amount}${order.currency}${order.description}${Akurateco.instance.password}`;
+    const toMd5 = `${order.number}${order.amount}${order.currency}${order.description}${OpenPaymentPlatform.instance.password}`;
     expect(posted.hash).toBe(nodeCheckoutHash(toMd5));
 
     // ensure base request fields are present
@@ -72,15 +72,15 @@ describe('HttpServiceService', () => {
   });
 
   test('fetchPaymentUrl throws PaymentBackendException when redirect_url missing', async () => {
-    const order = new AkuratecoOrder({
+    const order = new OpenPaymentPlatformOrder({
       number: 'N-1',
       amount: '10.00',
       currency: 'USD',
       description: 'My order',
     });
 
-    const request = new AkuratecoRequest({
-      operation: AkuratecoOperation.purchase,
+    const request = new OpenPaymentPlatformRequest({
+      operation: OpenPaymentPlatformOperation.purchase,
       successUrl: 'https://example.com/success',
       order,
     });
@@ -115,7 +115,7 @@ describe('HttpServiceService', () => {
   });
 
   test('checkStatus calls status endpoint and parses status', async () => {
-    const order = new AkuratecoOrder({
+    const order = new OpenPaymentPlatformOrder({
       number: 'N-1',
       amount: '10.00',
       currency: 'USD',

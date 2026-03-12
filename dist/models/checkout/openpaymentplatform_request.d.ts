@@ -1,11 +1,11 @@
-import { AkuratecoOrder } from '../akurateco_order';
+import { OpenPaymentPlatformOrder } from '../openpaymentplatform_order';
 import { Customer } from '../customer';
 import { BillingAddress } from './billing_address';
 import { Payee } from './payee';
 /**
  * Operation type for the hosted checkout.
  */
-export declare enum AkuratecoOperation {
+export declare enum OpenPaymentPlatformOperation {
     purchase = "purchase",
     debit = "debit",
     transfer = "transfer"
@@ -16,8 +16,8 @@ export declare enum AkuratecoOperation {
  * This object is serialized with {@link toJson} and sent to your backend. The
  * backend typically adds merchant data (merchant key) and a signature/hash.
  */
-export declare class AkuratecoRequest {
-    readonly operation: AkuratecoOperation;
+export declare class OpenPaymentPlatformRequest {
+    readonly operation: OpenPaymentPlatformOperation;
     readonly successUrl: string;
     readonly methods?: string[] | null;
     readonly channelId?: string | null;
@@ -32,7 +32,7 @@ export declare class AkuratecoRequest {
     readonly recurringInit?: boolean | null;
     readonly scheduleId?: string | null;
     readonly vatCalc?: boolean | null;
-    readonly order: AkuratecoOrder;
+    readonly order: OpenPaymentPlatformOrder;
     readonly customer?: Customer | null;
     readonly billingAddress?: BillingAddress | null;
     readonly payee?: Payee | null;
@@ -40,9 +40,9 @@ export declare class AkuratecoRequest {
     readonly parameters?: Record<string, any> | null;
     readonly customData?: Record<string, any> | null;
     constructor(args: {
-        operation: AkuratecoOperation;
+        operation: OpenPaymentPlatformOperation;
         successUrl: string;
-        order: AkuratecoOrder;
+        order: OpenPaymentPlatformOrder;
         methods?: string[] | null;
         channelId?: string | null;
         sessionExpiry?: number | null;
@@ -71,4 +71,4 @@ export declare class AkuratecoRequest {
      */
     toJson(): Record<string, any>;
 }
-//# sourceMappingURL=akurateco_request.d.ts.map
+//# sourceMappingURL=openpaymentplatform_request.d.ts.map

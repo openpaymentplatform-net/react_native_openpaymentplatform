@@ -1,12 +1,12 @@
-import { AkuratecoHashUtils } from '../utils/hash_utils';
+import { OpenPaymentPlatformHashUtils } from '../utils/hash_utils';
 import { PaymentBackendException, PaymentException, PaymentInitializationException, } from '../exceptions/exceptions';
-import { Akurateco } from '../akurateco';
-import { AkuratecoVoid } from '../models/akurateco_void';
+import { OpenPaymentPlatform } from '../openpaymentplatform';
+import { OpenPaymentPlatformVoid } from '../models/openpaymentplatform_void';
 import { CheckStatusResult } from '../models/check_status_model';
 /**
- * Internal HTTP client used by {@link Akurateco}.
+ * Internal HTTP client used by {@link OpenPaymentPlatform}.
  *
- * This client uses `fetch` to call a merchant backend (not Akurateco directly).
+ * This client uses `fetch` to call a merchant backend (not OpenPaymentPlatform directly).
  * The backend is expected to expose the following endpoints:
  * - `POST /api/v1/session`
  * - `POST /api/v1/payment/status`
@@ -70,10 +70,10 @@ export class HttpServiceService {
                 status: errObj === null || errObj === void 0 ? void 0 : errObj.status,
                 data: errObj === null || errObj === void 0 ? void 0 : errObj.data,
             };
-            console.error('[Akurateco][_postJson] ERROR', details);
+            console.error('[OpenPaymentPlatform][_postJson] ERROR', details);
             // Якщо хочеш ще “розмазати” по рядках для читабельності в Logcat:
-            console.error('[Akurateco][_postJson] message:', details.message);
-            console.error('[Akurateco][_postJson] stack:', details.stack);
+            console.error('[OpenPaymentPlatform][_postJson] message:', details.message);
+            console.error('[OpenPaymentPlatform][_postJson] stack:', details.stack);
             // --- стандартна логіка ---
             if (e instanceof PaymentException)
                 throw e;
@@ -84,15 +84,15 @@ export class HttpServiceService {
     /**
      * Creates a new payment session and returns a redirect URL.
      *
-     * The request payload is based on {@link AkuratecoRequest.toJson}, then extended
+     * The request payload is based on {@link OpenPaymentPlatformRequest.toJson}, then extended
      * with `merchant_key` and computed `hash`.
      */
     async fetchPaymentUrl(request) {
         const body = typeof request.toJson === 'function' ? request.toJson() : { ...request };
         body['merchant_key'] = this.merchantKey;
-        body['hash'] = AkuratecoHashUtils.generateCheckoutHash({
+        body['hash'] = OpenPaymentPlatformHashUtils.generateCheckoutHash({
             order: request.order,
-            password: Akurateco.instance.password,
+            password: OpenPaymentPlatform.instance.password,
         });
         const data = await this._postJson(`${this.backendUrl}/api/v1/session`, body);
         const redirectUrl = data === null || data === void 0 ? void 0 : data['redirect_url'];
@@ -115,9 +115,9 @@ export class HttpServiceService {
             merchant_key: this.merchantKey,
             ...(paymentId != null ? { payment_id: paymentId } : {}),
             ...(orderId != null ? { order_id: orderId } : {}),
-            hash: AkuratecoHashUtils.generatePaymentIdHash({
+            hash: OpenPaymentPlatformHashUtils.generatePaymentIdHash({
                 id: paymentId !== null && paymentId !== void 0 ? paymentId : orderId,
-                password: Akurateco.instance.password,
+                password: OpenPaymentPlatform.instance.password,
             }),
         };
         const data = await this._postJson(`${this.backendUrl}/api/v1/payment/status`, body);
@@ -134,10 +134,10 @@ export class HttpServiceService {
             merchant_key: this.merchantKey,
             payment_id: args.paymentId,
             amount: args.amount,
-            hash: AkuratecoHashUtils.generateRefundHash({
+            hash: OpenPaymentPlatformHashUtils.generateRefundHash({
                 paymentId: args.paymentId,
                 amount: args.amount,
-                password: Akurateco.instance.password,
+                password: OpenPaymentPlatform.instance.password,
             }),
         };
         const data = await this._postJson(`${this.backendUrl}/api/v1/payment/refund`, body);
@@ -150,13 +150,13 @@ export class HttpServiceService {
         const body = {
             merchant_key: this.merchantKey,
             payment_id: args.paymentId,
-            hash: AkuratecoHashUtils.generatePaymentIdHash({
+            hash: OpenPaymentPlatformHashUtils.generatePaymentIdHash({
                 id: args.paymentId,
-                password: Akurateco.instance.password,
+                password: OpenPaymentPlatform.instance.password,
             }),
         };
         const data = await this._postJson(`${this.backendUrl}/api/v1/payment/void`, body);
-        return AkuratecoVoid.fromJson(data);
+        return OpenPaymentPlatformVoid.fromJson(data);
     }
 }
 //# sourceMappingURL=http_service.js.map

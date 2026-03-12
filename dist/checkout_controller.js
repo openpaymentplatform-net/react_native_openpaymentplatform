@@ -1,7 +1,7 @@
 /**
  * Encapsulates a single checkout flow configuration and callbacks.
  *
- * You pass an instance of this controller into {@link AkuratecoCheckout}. The
+ * You pass an instance of this controller into {@link OpenPaymentPlatformCheckout}. The
  * component uses it to:
  * - request the payment URL from the backend
  * - detect redirect URLs (success/error/cancel)
@@ -11,17 +11,17 @@
  * ```ts
  * import {
  *   CheckoutController,
- *   AkuratecoRequest,
- *   AkuratecoOperation,
- *   AkuratecoOrder,
- * } from 'react_native_akurateco';
+ *   OpenPaymentPlatformRequest,
+ *   OpenPaymentPlatformOperation,
+ *   OpenPaymentPlatformOrder,
+ * } from 'react_native_openpaymentplatform';
  *
- * const request = new AkuratecoRequest({
- *   operation: AkuratecoOperation.purchase,
+ * const request = new OpenPaymentPlatformRequest({
+ *   operation: OpenPaymentPlatformOperation.purchase,
  *   successUrl: 'myapp://payment/success',
  *   cancelUrl: 'myapp://payment/cancel',
  *   errorUrl: 'myapp://payment/error',
- *   order: new AkuratecoOrder({
+ *   order: new OpenPaymentPlatformOrder({
  *     number: 'ORDER-123',
  *     amount: '10.00',
  *     currency: 'USD',

@@ -1,11 +1,11 @@
 import type { PaymentException } from './exceptions/exceptions';
-import type { AkuratecoRequest } from './models/checkout/akurateco_request';
+import type { OpenPaymentPlatformRequest } from './models/checkout/openpaymentplatform_request';
 
 /**
  * Called when WebView navigates to any URL.
  *
  * The library will try to classify redirects into success/error/cancel based on
- * the URLs provided in {@link AkuratecoRequest}. If the URL does not match any
+ * the URLs provided in {@link OpenPaymentPlatformRequest}. If the URL does not match any
  * known redirect, it will be forwarded to the generic redirect callback.
  */
 export type OnRedirectCallback = (url: string) => void;
@@ -21,7 +21,7 @@ export type OnPaymentErrorCallback = (error: PaymentException) => void;
 /**
  * Encapsulates a single checkout flow configuration and callbacks.
  *
- * You pass an instance of this controller into {@link AkuratecoCheckout}. The
+ * You pass an instance of this controller into {@link OpenPaymentPlatformCheckout}. The
  * component uses it to:
  * - request the payment URL from the backend
  * - detect redirect URLs (success/error/cancel)
@@ -31,17 +31,17 @@ export type OnPaymentErrorCallback = (error: PaymentException) => void;
  * ```ts
  * import {
  *   CheckoutController,
- *   AkuratecoRequest,
- *   AkuratecoOperation,
- *   AkuratecoOrder,
- * } from 'react_native_akurateco';
+ *   OpenPaymentPlatformRequest,
+ *   OpenPaymentPlatformOperation,
+ *   OpenPaymentPlatformOrder,
+ * } from 'react_native_openpaymentplatform';
  *
- * const request = new AkuratecoRequest({
- *   operation: AkuratecoOperation.purchase,
+ * const request = new OpenPaymentPlatformRequest({
+ *   operation: OpenPaymentPlatformOperation.purchase,
  *   successUrl: 'myapp://payment/success',
  *   cancelUrl: 'myapp://payment/cancel',
  *   errorUrl: 'myapp://payment/error',
- *   order: new AkuratecoOrder({
+ *   order: new OpenPaymentPlatformOrder({
  *     number: 'ORDER-123',
  *     amount: '10.00',
  *     currency: 'USD',
@@ -59,7 +59,7 @@ export type OnPaymentErrorCallback = (error: PaymentException) => void;
  * ```
  */
 export class CheckoutController {
-  readonly paymentRequest: AkuratecoRequest;
+  readonly paymentRequest: OpenPaymentPlatformRequest;
 
   private _onSuccessRedirect?: OnRedirectCallback;
   private _onErrorRedirect?: OnRedirectCallback;
@@ -68,7 +68,7 @@ export class CheckoutController {
   private _onError?: OnPaymentErrorCallback;
 
   constructor(args: {
-    paymentRequest: AkuratecoRequest;
+    paymentRequest: OpenPaymentPlatformRequest;
     onSuccessRedirect?: OnRedirectCallback;
     onErrorRedirect?: OnRedirectCallback;
     onCancelRedirect?: OnRedirectCallback;

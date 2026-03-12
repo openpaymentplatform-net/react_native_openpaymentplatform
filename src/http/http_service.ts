@@ -1,18 +1,18 @@
-import { AkuratecoHashUtils } from '../utils/hash_utils';
+import { OpenPaymentPlatformHashUtils } from '../utils/hash_utils';
 import {
   PaymentBackendException,
   PaymentException,
   PaymentInitializationException,
 } from '../exceptions/exceptions';
-import { Akurateco } from '../akurateco';
-import { AkuratecoVoid } from '../models/akurateco_void';
+import { OpenPaymentPlatform } from '../openpaymentplatform';
+import { OpenPaymentPlatformVoid } from '../models/openpaymentplatform_void';
 import { CheckStatusResult } from '../models/check_status_model';
-import type { AkuratecoRequest } from '../models/checkout/akurateco_request';
+import type { OpenPaymentPlatformRequest } from '../models/checkout/openpaymentplatform_request';
 
 /**
- * Internal HTTP client used by {@link Akurateco}.
+ * Internal HTTP client used by {@link OpenPaymentPlatform}.
  *
- * This client uses `fetch` to call a merchant backend (not Akurateco directly).
+ * This client uses `fetch` to call a merchant backend (not OpenPaymentPlatform directly).
  * The backend is expected to expose the following endpoints:
  * - `POST /api/v1/session`
  * - `POST /api/v1/payment/status`
@@ -79,11 +79,11 @@ private async _postJson(url: string, body: Record<string, any>): Promise<any> {
       data: errObj?.data,
     };
 
-    console.error('[Akurateco][_postJson] ERROR', details);
+    console.error('[OpenPaymentPlatform][_postJson] ERROR', details);
 
     // Якщо хочеш ще “розмазати” по рядках для читабельності в Logcat:
-    console.error('[Akurateco][_postJson] message:', details.message);
-    console.error('[Akurateco][_postJson] stack:', details.stack);
+    console.error('[OpenPaymentPlatform][_postJson] message:', details.message);
+    console.error('[OpenPaymentPlatform][_postJson] stack:', details.stack);
 
     // --- стандартна логіка ---
     if (e instanceof PaymentException) throw e;
@@ -98,17 +98,17 @@ private async _postJson(url: string, body: Record<string, any>): Promise<any> {
   /**
    * Creates a new payment session and returns a redirect URL.
    *
-   * The request payload is based on {@link AkuratecoRequest.toJson}, then extended
+   * The request payload is based on {@link OpenPaymentPlatformRequest.toJson}, then extended
    * with `merchant_key` and computed `hash`.
    */
-  async fetchPaymentUrl(request: AkuratecoRequest): Promise<string> {
+  async fetchPaymentUrl(request: OpenPaymentPlatformRequest): Promise<string> {
     const body: Record<string, any> =
       typeof (request as any).toJson === 'function' ? (request as any).toJson() : { ...(request as any) };
 
     body['merchant_key'] = this.merchantKey;
-    body['hash'] = AkuratecoHashUtils.generateCheckoutHash({
+    body['hash'] = OpenPaymentPlatformHashUtils.generateCheckoutHash({
       order: request.order,
-      password: Akurateco.instance.password,
+      password: OpenPaymentPlatform.instance.password,
     });
 
     const data = await this._postJson(`${this.backendUrl}/api/v1/session`, body);
@@ -136,9 +136,9 @@ private async _postJson(url: string, body: Record<string, any>): Promise<any> {
       merchant_key: this.merchantKey,
       ...(paymentId != null ? { payment_id: paymentId } : {}),
       ...(orderId != null ? { order_id: orderId } : {}),
-      hash: AkuratecoHashUtils.generatePaymentIdHash({
+      hash: OpenPaymentPlatformHashUtils.generatePaymentIdHash({
         id: paymentId ?? (orderId as string),
-        password: Akurateco.instance.password,
+        password: OpenPaymentPlatform.instance.password,
       }),
     };
 
@@ -156,10 +156,10 @@ private async _postJson(url: string, body: Record<string, any>): Promise<any> {
       merchant_key: this.merchantKey,
       payment_id: args.paymentId,
       amount: args.amount,
-      hash: AkuratecoHashUtils.generateRefundHash({
+      hash: OpenPaymentPlatformHashUtils.generateRefundHash({
         paymentId: args.paymentId,
         amount: args.amount,
-        password: Akurateco.instance.password,
+        password: OpenPaymentPlatform.instance.password,
       }),
     };
 
@@ -170,17 +170,17 @@ private async _postJson(url: string, body: Record<string, any>): Promise<any> {
   /**
    * Requests a void operation.
    */
-  async voidOperation(args: { paymentId: string }): Promise<AkuratecoVoid> {
+  async voidOperation(args: { paymentId: string }): Promise<OpenPaymentPlatformVoid> {
     const body: Record<string, any> = {
       merchant_key: this.merchantKey,
       payment_id: args.paymentId,
-      hash: AkuratecoHashUtils.generatePaymentIdHash({
+      hash: OpenPaymentPlatformHashUtils.generatePaymentIdHash({
         id: args.paymentId,
-        password: Akurateco.instance.password,
+        password: OpenPaymentPlatform.instance.password,
       }),
     };
 
     const data = await this._postJson(`${this.backendUrl}/api/v1/payment/void`, body);
-    return AkuratecoVoid.fromJson(data);
+    return OpenPaymentPlatformVoid.fromJson(data);
   }
 }

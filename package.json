@@ -1,13 +1,13 @@
 {
   "react-native": "dist/index.js",
-  "name": "@akurateco/react-native-akurateco",
+  "name": "@openpaymentplatform/react-native-openpaymentplatform",
   "version": "1.0.0",
-  "description": "React Native Akurateco checkout (WebView) + backend API helper.",
+  "description": "React Native OpenPaymentPlatform checkout (WebView) + backend API helper.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "Akurateco",
+  "author": "OpenPaymentPlatform",
   "license": "MIT",
-  "homepage": "https://akurateco.com/",
+  "homepage": "https://openpaymentplatform.net/",
   "publishConfig": {
     "access": "restricted"
   },
@@ -16,7 +16,7 @@
     "payments",
     "checkout",
     "webview",
-    "akurateco"
+    "openpaymentplatform"
   ],
   "create-react-native-library": {
     "type": "library",

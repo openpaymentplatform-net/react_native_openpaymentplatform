@@ -1,7 +1,7 @@
 import { createHash } from 'crypto';
 
-import { AkuratecoHashUtils } from '../src/utils/hash_utils';
-import { AkuratecoOrder } from '../src/models/akurateco_order';
+import { OpenPaymentPlatformHashUtils } from '../src/utils/hash_utils';
+import { OpenPaymentPlatformOrder } from '../src/models/openpaymentplatform_order';
 
 function nodeCheckoutHash(toMd5: string): string {
   const upper = toMd5.toUpperCase();
@@ -9,9 +9,9 @@ function nodeCheckoutHash(toMd5: string): string {
   return createHash('sha1').update(md5Hex, 'utf8').digest('hex');
 }
 
-describe('AkuratecoHashUtils', () => {
+describe('OpenPaymentPlatformHashUtils', () => {
   test('generateCheckoutHash matches node crypto implementation', () => {
-    const order = new AkuratecoOrder({
+    const order = new OpenPaymentPlatformOrder({
       number: 'ORDER-123',
       amount: '10.50',
       currency: 'USD',
@@ -23,7 +23,7 @@ describe('AkuratecoHashUtils', () => {
     const toMd5 = `${order.number}${order.amount}${order.currency}${order.description}${password}`;
     const expected = nodeCheckoutHash(toMd5);
 
-    expect(AkuratecoHashUtils.generateCheckoutHash({ order, password })).toBe(expected);
+    expect(OpenPaymentPlatformHashUtils.generateCheckoutHash({ order, password })).toBe(expected);
   });
 
   test('generatePaymentIdHash matches node crypto implementation', () => {
@@ -31,7 +31,7 @@ describe('AkuratecoHashUtils', () => {
     const password = 'secret';
 
     const expected = nodeCheckoutHash(`${id}${password}`);
-    expect(AkuratecoHashUtils.generatePaymentIdHash({ id, password })).toBe(expected);
+    expect(OpenPaymentPlatformHashUtils.generatePaymentIdHash({ id, password })).toBe(expected);
   });
 
   test('generateRefundHash matches node crypto implementation', () => {
@@ -40,18 +40,18 @@ describe('AkuratecoHashUtils', () => {
     const password = 'secret';
 
     const expected = nodeCheckoutHash(`${paymentId}${amount}${password}`);
-    expect(AkuratecoHashUtils.generateRefundHash({ paymentId, amount, password })).toBe(expected);
+    expect(OpenPaymentPlatformHashUtils.generateRefundHash({ paymentId, amount, password })).toBe(expected);
   });
 
   test('hash is case-insensitive for input concatenation', () => {
-    const orderA = new AkuratecoOrder({
+    const orderA = new OpenPaymentPlatformOrder({
       number: 'order-abc',
       amount: '10',
       currency: 'usd',
       description: 'hello',
     });
 
-    const orderB = new AkuratecoOrder({
+    const orderB = new OpenPaymentPlatformOrder({
       number: 'ORDER-ABC',
       amount: '10',
       currency: 'USD',
@@ -60,8 +60,8 @@ describe('AkuratecoHashUtils', () => {
 
     const password = 'secret';
 
-    expect(AkuratecoHashUtils.generateCheckoutHash({ order: orderA, password })).toBe(
-      AkuratecoHashUtils.generateCheckoutHash({ order: orderB, password }),
+    expect(OpenPaymentPlatformHashUtils.generateCheckoutHash({ order: orderA, password })).toBe(
+      OpenPaymentPlatformHashUtils.generateCheckoutHash({ order: orderB, password }),
     );
   });
 });

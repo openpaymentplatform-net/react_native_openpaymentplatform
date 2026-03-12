@@ -1,4 +1,4 @@
-import { AkuratecoOrder } from './akurateco_order';
+import { OpenPaymentPlatformOrder } from './openpaymentplatform_order';
 import { Customer } from './customer';
 import { statusToString, stringToStatus } from './enums';
 /**
@@ -27,7 +27,7 @@ export class CheckStatusResult {
             reason: json === null || json === void 0 ? void 0 : json['reason'],
             recurringToken: json === null || json === void 0 ? void 0 : json['recurring_token'],
             sheduleId: json === null || json === void 0 ? void 0 : json['schedule_id'],
-            order: AkuratecoOrder.fromJson(json === null || json === void 0 ? void 0 : json['order']),
+            order: OpenPaymentPlatformOrder.fromJson(json === null || json === void 0 ? void 0 : json['order']),
             customer: (json === null || json === void 0 ? void 0 : json['customer']) != null ? Customer.fromJson(json === null || json === void 0 ? void 0 : json['customer']) : null,
         });
     }

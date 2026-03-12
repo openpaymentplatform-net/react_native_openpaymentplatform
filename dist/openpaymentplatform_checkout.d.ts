@@ -9,10 +9,10 @@ type Props = {
     controller: CheckoutController;
 };
 /**
- * React Native component that performs the hosted Akurateco checkout inside a WebView.
+ * React Native component that performs the hosted OpenPaymentPlatform checkout inside a WebView.
  *
  * Flow:
- * 1) On mount, it calls `Akurateco.instance.fetchPaymentUrl(...)`.
+ * 1) On mount, it calls `OpenPaymentPlatform.instance.fetchPaymentUrl(...)`.
  * 2) When the payment URL is received, it loads it into a `react-native-webview`.
  * 3) Every navigation is inspected. If it matches success/error/cancel URLs, the
  *    matching callback on the provided controller is called.
@@ -26,7 +26,7 @@ type Props = {
  * @example
  * ```tsx
  * import React, { useMemo } from 'react';
- * import { AkuratecoCheckout, CheckoutController } from 'react_native_akurateco';
+ * import { OpenPaymentPlatformCheckout, CheckoutController } from 'react_native_openpaymentplatform';
  *
  * export function CheckoutScreen() {
  *   const controller = useMemo(() => {
@@ -39,10 +39,10 @@ type Props = {
  *     });
  *   }, []);
  *
- *   return <AkuratecoCheckout controller={controller} />;
+ *   return <OpenPaymentPlatformCheckout controller={controller} />;
  * }
  * ```
  */
-export declare function AkuratecoCheckout({ controller }: Props): import("react/jsx-runtime").JSX.Element;
+export declare function OpenPaymentPlatformCheckout({ controller }: Props): import("react/jsx-runtime").JSX.Element;
 export {};
-//# sourceMappingURL=akurateco_checkout.d.ts.map
+//# sourceMappingURL=openpaymentplatform_checkout.d.ts.map

@@ -1,7 +1,7 @@
 /**
  * Order details used for creating a checkout session and for status/void payloads.
  */
-export class AkuratecoOrder {
+export class OpenPaymentPlatformOrder {
   readonly number: string;
   readonly amount: string;
   readonly currency: string;
@@ -17,8 +17,8 @@ export class AkuratecoOrder {
   /**
    * Creates an instance from a backend JSON payload.
    */
-  static fromJson(json: any): AkuratecoOrder {
-    return new AkuratecoOrder({
+  static fromJson(json: any): OpenPaymentPlatformOrder {
+    return new OpenPaymentPlatformOrder({
       number: json?.['number'],
       amount: json?.['amount'],
       currency: json?.['currency'],
