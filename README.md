@@ -31,7 +31,7 @@ Compatibility note: the `example/` app is built for Expo SDK 54 / React Native 0
 ## Installation
 
 ```sh
-npm i @openpaymentplatform/react-native-openpaymentplatform
+npm install github:openpaymentplatform-net/react_native_openpaymentplatform
 ```
 
 ### Dependencies your app must install
